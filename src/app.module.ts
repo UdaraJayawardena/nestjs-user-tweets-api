@@ -4,13 +4,15 @@ import { AppController } from './app.controller';
 import { UserController } from './user/user.controller';
 import { TweetController } from './tweet/tweet.controller';
 
+import { AuthModule } from './auth/auth.module';
+
 import { UserService } from './user/user.service';
 import { AppService } from './app.service';
 import { TweetService } from './tweet/tweet.service';
 import { PrismaService } from './prisma/prisma.service';
 
 @Module({
-  imports: [],
+  imports: [AuthModule],
   controllers: [AppController, TweetController, UserController],
   providers: [AppService,PrismaService, TweetService, UserService],
 })
