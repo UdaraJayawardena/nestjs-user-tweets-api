@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Re
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { TweetService } from './tweet.service';
 import { Request } from 'express';
+
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { OwnTweetGuard } from '../auth/guards/own-tweet.guard';
 
 import { CreateTweetDto } from './dto/create-tweet';
 import { UpdateTweetDto } from './dto/update-tweet';
@@ -40,7 +42,7 @@ export class TweetController {
     }
 
     @Put('update/:id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, OwnTweetGuard)
     @ApiOperation({ summary: 'Update a Tweet' })
     @ApiResponse({ status: 200, description: 'Successfully Updated' })
     async updateTweet(
@@ -50,9 +52,8 @@ export class TweetController {
         return this.tweetService.updateTweet(Number(id), body.tweet);
     }
 
-
     @Delete('delete/:id')
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, OwnTweetGuard)
     @ApiOperation({ summary: 'Delete a Tweet' })
     @ApiResponse({ status: 200, description: 'Successfully Deleted' })
     async deleteTweet(@Param('id') id: string) {
@@ -72,7 +73,7 @@ export class TweetController {
         return this.tweetService.getTweetsPaginated(page, limit);
     }
 
-    
+
     // @Post('abcd')
     // @ApiOperation({ summary: 'Fetch all Tweets' })
     // @ApiResponse({ status: 200 })
