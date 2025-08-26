@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, ConflictException } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, ConflictException, Param, ParseIntPipe} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -33,5 +33,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   findAllUsers() {
     return this.userService.findAllUsers();
+  }
+
+  @Get(':id')
+  async getUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUserById(id);
   }
 }

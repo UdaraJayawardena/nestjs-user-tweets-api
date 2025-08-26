@@ -51,4 +51,28 @@ export class TweetService {
             where: { id },
         });
     }
+
+    // Fetch tweets with Pagination
+    async getTweetsPaginated(page: number = 1, limit: number = 10) {
+        const skip = (page - 1) * limit;
+
+        const [tweets, total] = await Promise.all([
+            this.prisma.tweet.findMany({
+                skip,
+                take: limit,
+                orderBy: { createdAt: 'desc' },
+            }),
+
+            this.prisma.tweet.count(),
+        ]);
+
+        return {
+            data: tweets,
+            meta: {
+                total,
+                page,
+                lastPage: Math.ceil(total / limit),
+            },
+        };
+    }
 }

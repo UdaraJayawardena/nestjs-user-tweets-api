@@ -18,6 +18,7 @@ export class TweetController {
     @ApiOperation({ summary: 'Fetch all Tweets' })
     @ApiResponse({ status: 200 })
     findAllEmployees() {
+        console.log("Fetching all tweets...");
         return this.tweetService.getAllTweets();
     }
 
@@ -58,6 +59,25 @@ export class TweetController {
         return this.tweetService.deleteTweet(Number(id));
     }
 
+    @Post('paginated')
+    async fetchPaginated(
+        @Body('page') pageRaw?: number,
+        @Body('limit') limitRaw?: number,
+    ) {
+        const page = pageRaw ?? 1;    // default page 1
+        const limit = limitRaw ?? 10; // default limit 10
 
+        console.log('Page:', page, 'Limit:', limit);
 
+        return this.tweetService.getTweetsPaginated(page, limit);
+    }
+
+    
+    // @Post('abcd')
+    // @ApiOperation({ summary: 'Fetch all Tweets' })
+    // @ApiResponse({ status: 200 })
+    // findAllEmployeess() {
+    //     console.log("Fetching all tweets...");
+    //     return this.tweetService.getAllTweets();
+    // }
 }
