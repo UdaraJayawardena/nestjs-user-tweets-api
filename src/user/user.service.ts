@@ -1,6 +1,7 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
+
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,7 @@ export class UserService {
   }
 
   // Register a new user
-  async createUser(username: string, email: string, password: string) {
+  async registerUser(username: string, email: string, password: string) {
 
     // Ensure username and password are provided
     if (!username || !password) {
@@ -53,6 +54,7 @@ export class UserService {
 
     return updatedList;
   }
+
   // Fetch a single User by ID
   async getUserById(id: number) {
     const user = await this.prisma.user.findUnique({
@@ -65,5 +67,37 @@ export class UserService {
     }
 
     return user;
+  }
+
+  // Update User
+  async updateUser(id: number, email: string) {
+    const userExists = await this.prisma.user.findUnique({ where: { id } });
+    if (!userExists) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: { email },
+      select: { id: true, email: true, username: true, createdAt: true, updatedAt: true }
+    });
+
+    return updatedUser;
+  }
+
+// Delete User
+  async deleteUser(id: number, accountStatus: string) {
+    const userExists = await this.prisma.user.findUnique({ where: { id } });
+    if (!userExists) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    const deleteUser = await this.prisma.user.update({
+      where: { id },
+      data: { accountStatus },
+      select: { id: true, email: true, username: true, createdAt: true, updatedAt: true }
+    });
+
+    return deleteUser;
   }
 }

@@ -1,11 +1,13 @@
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String   @unique
-  password  String   
-  
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  username      String   @unique
+  password      String
+
+  accountStatus String  @default("active")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  tweets     Tweet[]
+  tweets        Tweet[]
 }

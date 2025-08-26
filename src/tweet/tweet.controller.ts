@@ -32,7 +32,7 @@ export class TweetController {
     @UseGuards(JwtAuthGuard)
     @ApiOperation({ summary: 'Create a new Tweet' })
     @ApiResponse({ status: 200, description: 'Successfully created' })
-    createTodo(@Body() body: CreateTweetDto,
+    createTweet(@Body() body: CreateTweetDto,
         @Req() request: Request) {
         const userId = request.user.userId
 
@@ -43,7 +43,7 @@ export class TweetController {
     @UseGuards(JwtAuthGuard)
     @ApiOperation({ summary: 'Update a Tweet' })
     @ApiResponse({ status: 200, description: 'Successfully Updated' })
-    async updateTodo(
+    async updateTweet(
         @Param('id') id: string,
         @Body() body: UpdateTweetDto
     ) {
@@ -55,7 +55,7 @@ export class TweetController {
     // @UseGuards(JwtAuthGuard)
     @ApiOperation({ summary: 'Delete a Tweet' })
     @ApiResponse({ status: 200, description: 'Successfully Deleted' })
-    async deleteTodo(@Param('id') id: string) {
+    async deleteTweet(@Param('id') id: string) {
         return this.tweetService.deleteTweet(Number(id));
     }
 

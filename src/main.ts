@@ -8,7 +8,7 @@ async function bootstrap() {
 
   // Swagger Configuration
   const config = new DocumentBuilder()
-    .setTitle('Todo API')
+    .setTitle('API Docs')
     .setDescription('API documentation for the NestJS User Tweet Application')
     .setVersion('1.0')
     .addBearerAuth() 
