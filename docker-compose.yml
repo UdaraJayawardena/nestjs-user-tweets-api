@@ -1,0 +1,30 @@
+services:
+  api:
+    build: .
+    container_name: nestjs-api
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: sh -c "npx prisma migrate dev --name init --skip-seed && npx prisma generate && npm run start:dev"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: udara123
+      POSTGRES_DB: user_tweets_api_backend
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
