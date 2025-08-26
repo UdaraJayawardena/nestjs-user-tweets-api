@@ -60,6 +60,14 @@ $ npm run start
 # starts in watch mode
 $ npm run start:dev
 ```
+
+## Run with Docker Compose
+
+```bash
+# docker compose
+$ sudo docker compose up --build
+
+```
 ## API Documentation
 
 ```bash
